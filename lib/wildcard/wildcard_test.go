@@ -63,6 +63,36 @@ func TestWildCard(t *testing.T) {
 		t.Error("expect false actually true")
 	}
 
+	// test [a-c]
+	p = CompilePattern("h[a-c]llo")
+	if !p.IsMatch("hallo") {
+		t.Error("expect true actually false")
+	}
+	if !p.IsMatch("hbllo") {
+		t.Error("expect true actually false")
+	}
+	if !p.IsMatch("hcllo") {
+		t.Error("expect true actually false")
+	}
+	if p.IsMatch("hdllo") {
+		t.Error("expect false actually true")
+	}
+	if p.IsMatch("hello") {
+		t.Error("expect false actually true")
+	}
+
+	// test [^]
+	p = CompilePattern("h[^ab]llo")
+	if p.IsMatch("hallo") {
+		t.Error("expect false actually true")
+	}
+	if p.IsMatch("hbllo") {
+		t.Error("expect false actually true")
+	}
+	if !p.IsMatch("hcllo") {
+		t.Error("expect true actually false")
+	}
+
 	// test escape
 	p = CompilePattern("\\\\") // pattern: \\
 	if !p.IsMatch("\\") {
